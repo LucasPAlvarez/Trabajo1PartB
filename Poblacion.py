@@ -12,7 +12,7 @@ class Poblacion:
 		for i in range(cant):
 			self.poblacion.append(Cromosoma.Cromosoma())
 
-		self.totalFitness = self.totalFitness()
+		self.totalFitness = self.totalFitnessfuncion()
 		self.promedioFitness = self.totalFitness/len(self.poblacion)
 
 	#permite convertir la poblacion en un string
@@ -27,7 +27,7 @@ class Poblacion:
 		return self.poblacion[index]
 
 	#calcula el fitness de todos los genes y los suma
-	def totalFitness(self):
+	def totalFitnessfuncion(self):
 		fitness = 0
 		for crom in self.poblacion:
 			fitness += crom.valorFuncion()
@@ -79,6 +79,8 @@ class Poblacion:
 			print("hubo un error con la cantidad")
 
 		self.numGeneracion +=1
+		self.totalFitness = self.totalFitnessfuncion()
+		self.promedioFitness = self.totalFitness/len(self.poblacion)
 		return 0
 
 	# los 2 mejores cromosomas selecionados por su fitness son seleccionados para pasar directamente a la siguiente generacion
@@ -94,6 +96,7 @@ class Poblacion:
 
 			if(self.cromosomaFitness(pase2)< self.cromosomaFitness(pruevaPase)):
 				pase2 = pruevaPase
+		print("\nel primer valor es: {0} elsegundo valor es: {0}\n\n".format(pase1.valorDecimal(), pase2.valorDecimal()))
 		return [pase1,pase2]
 
 
@@ -145,7 +148,8 @@ class Poblacion:
 
 		strDevolver += "_________________________________________________________________________\n"
 		strDevolver += "Suma\t\t\t\t\t\t\t{0:.4f}\t1\n".format(sumaTemp)
-		strDevolver += "Promedio\t\t\t\t\t\t{0:.4f}\t0.1\n".format(sumaTemp/len(self.poblacion))
+		#strDevolver += "Promedio\t\t\t\t\t\t{0:.4f}\t0.1\n".format(sumaTemp/len(self.poblacion))
+		strDevolver += "Promedio\t\t\t\t\t\t{0:.4f}\t0.1\n".format(self.promedioFitness)
 		strDevolver += "Maximo\t\t\t\t\t\t\t{0:.4f}\t{1}\n".format(maximoTemp.valorFuncion(), "{:.2}".format(maximoTemp.valorFuncion()/self.totalFitness))
 
 		#devuelve el string puede verse en pantalla o guardarse en un .txt
