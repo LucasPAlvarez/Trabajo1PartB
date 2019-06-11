@@ -87,16 +87,18 @@ class Poblacion:
 	def paseDirecto(self):
 		pase1 = self.poblacion[0]
 		pase2 = self.poblacion[1]
+		print("\n(inicio)el primer valor es: {0} elsegundo valor es: {1}\n\n".format(pase1.valorDecimal(), pase2.valorDecimal()))
 		for index in range(2,len(self.poblacion),1):
 			pruevaPase = self.poblacion[index]
 			if(self.cromosomaFitness(pase1)< self.cromosomaFitness(pruevaPase)):
 				temp = pase1
 				pase1 = pruevaPase
 				pruevaPase = temp
-
+				print("\n(primer pase) primer: {0} segundo: {1}\n\n".format(pase1.valorDecimal(), pase2.valorDecimal()))
 			if(self.cromosomaFitness(pase2)< self.cromosomaFitness(pruevaPase)):
 				pase2 = pruevaPase
-		print("\nel primer valor es: {0} elsegundo valor es: {0}\n\n".format(pase1.valorDecimal(), pase2.valorDecimal()))
+				print("\n(segundo pase) primer: {0} segundo: {1}\n\n".format(pase1.valorDecimal(), pase2.valorDecimal()))
+		print("\n(final)el primer valor es: {0} elsegundo valor es: {1}\n\n".format(pase1.valorDecimal(), pase2.valorDecimal()))
 		return [pase1,pase2]
 
 
