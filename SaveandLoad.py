@@ -4,22 +4,23 @@ import json
 
 #Guarda todas las generaciones para poder verlas en un archivo .txt
 def saveRecord(texto):
+	#busca el archivo .txt, si no lo encuentra crea uno nuevo sino lo abre solo para editarlo
 	if not os.path.isfile("Data/pasado.txt"):
 		pathFile = open("Data/pasado.txt", "w")
 	else:
 		pathFile = open("Data/pasado.txt", "a")
 
-
+	#escribe el texto dado a la funcion
 	pathFile.write(texto)
 	pathFile.write("\n\n")
 
+	#cierra el archivo
 	pathFile.close()
 
 
-#Guarda todas las generaciones para poder representarlas en una grafica
+#Guarda todas las generaciones en un archivo json para poder representarlas en una grafica
 def saveHistory(myPobl):
-	#Configura algunos valores para guardar
-	prome = 0
+	#saca los valores minimos y maximos de la poblacion
 	mValue = 0
 	lValue = 2
 	for pob in myPobl.poblacion:
@@ -28,10 +29,9 @@ def saveHistory(myPobl):
 			mValue = temp
 		if lValue > temp:
 			lValue = temp
-		prome = prome + temp
 
 
-	#Si no hay un archivo json, entonces crea datos nuevos
+	#Si no hay un archivo json, entonces crea datos nuevos,si existe lo abre para agregarle mas datos
 	if not os.path.isfile("Data/data.json"):
 		newData ={"minValue":[], "Promedio":[], "maxValue":[]}
 		
@@ -41,7 +41,7 @@ def saveHistory(myPobl):
 
 	#Añade los datos nuevos y luego los guarda
 	newData["minValue"].append(lValue)
-	newData["Promedio"].append(prome/4)
+	newData["Promedio"].append(myPobl.promedioFitness)
 	newData["maxValue"].append(mValue)
 	with open("Data/data.json", "w") as sj:
 		json.dump(newData, sj)

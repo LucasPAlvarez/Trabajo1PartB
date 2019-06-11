@@ -2,7 +2,7 @@ import random
 import Cromosoma
 
 class Poblacion:
-
+	#inicializa la poblacion y todas sus variables
 	def __init__ (self, cant, probCrossover = 0.75, probMutation = 0.05):
 		self.poblacion = []
 		self.numGeneracion = 0
@@ -15,34 +15,44 @@ class Poblacion:
 		self.totalFitness = self.totalFitness()
 		self.promedioFitness = self.totalFitness/len(self.poblacion)
 
+	#permite convertir la poblacion en un string
 	def __str__(self):
 		temp = ""
 		for cromosoma in self.poblacion:
 			for num in cromosoma:
 				temp += num.__str__()
 
+	#permite buscar en poblacion por index
 	def __getitem__(self, index):
 		return self.poblacion[index]
 
+	#calcula el fitness de todos los genes y los suma
 	def totalFitness(self):
 		fitness = 0
 		for crom in self.poblacion:
 			fitness += crom.valorFuncion()
 		return fitness
 
+	#calcula el porcentaje del fitness de un cromosoma
 	def cromosomaFitness(self, crom):
 		return crom.valorFuncion()/self.totalFitness
 
+
+	#crea una nueva generacion
 	def nextGeneracion(self):
+		#crea una nueva generacion vacia
 		nextGen = []
 
+		#selecciona los cromosomas para el pase directo
 		pasedirecto = self.paseDirecto()
 
 		for cromo in pasedirecto:
 			nextGen.append(cromo)
 
+		#crea una ruleta para la creacion de hijos
 		ruleta = self.generarRuleta()
 
+		#crea los hijos haciendo crossover  mutando los padres seleccionados al azar en la ruleta
 		cantHijos = int((len(self.poblacion)-2)/2)
 		for i in range(cantHijos):
 			padres = []
@@ -60,6 +70,8 @@ class Poblacion:
 			for cromo in hijos:
 				nextGen.append(cromo)
 
+		#guarda la nueva generacion en la variable poblacion
+
 		if len(nextGen) == len(self.poblacion):
 			self.poblacion = nextGen
 		else:
@@ -69,7 +81,7 @@ class Poblacion:
 		self.numGeneracion +=1
 		return 0
 
-
+	# los 2 mejores cromosomas selecionados por su fitness son seleccionados para pasar directamente a la siguiente generacion
 	def paseDirecto(self):
 		pase1 = self.poblacion[0]
 		pase2 = self.poblacion[1]
@@ -84,6 +96,8 @@ class Poblacion:
 				pase2 = pruevaPase
 		return [pase1,pase2]
 
+
+	#genera la ruleta que se utilizara para selecionar los padres
 	def generarRuleta(self):
 		ruleta = []
 		for i in range(len(self.poblacion)):
@@ -91,6 +105,7 @@ class Poblacion:
 
 		return ruleta
 
+	#hace el crossover de dos padres
 	def Crossover(self, padres):
 		crossPoint = random.randint(0,len(self.poblacion)-1)
 		hijos = [Cromosoma.Cromosoma(),Cromosoma.Cromosoma()]
@@ -116,6 +131,7 @@ class Poblacion:
 		strDevolver += "Cromosoma\t\t\t\tValor\t\tFuncion\tFitness\n"
 		strDevolver += "_________________________________________________________________________\n"
 
+		#muestra cada cromosoma con sus datos dentro de poblacion
 		for i in self.poblacion:
 			strDevolver += "{0}\t\t".format(i)
 			strDevolver += "{0}\t".format(i.valorDecimal())
